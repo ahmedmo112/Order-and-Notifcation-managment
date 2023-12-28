@@ -19,7 +19,7 @@ public class UserAccount {
 
     public UserAccount(UserAccount userAccount){
         this.name = userAccount.name;
-        this.email = userAccount.emali;
+        this.email = userAccount.email;
         this.password = userAccount.password;
         this.address = userAccount.address;
         this.id = userAccount.id;

@@ -1,5 +1,9 @@
 package com.main.UserAccount.Database;
 
+import com.main.UserAccount.model.AccountManger;
+
+import java.util.List;
+
 public interface AccountMangerDB {
     
     public List<AccountManger> getPayment();

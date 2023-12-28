@@ -9,8 +9,8 @@ import java.util.List;
 public class CategoryInMemoryDB implements CategoryDB{
     private List<Category> categories= List.of(
             new Category(1,"Electronics",2),
-            new Category(4,"Grocery",3),
-            new Category(5,"Books",1)
+            new Category(2,"Grocery",3),
+            new Category(3,"Books",1)
     );
 
 

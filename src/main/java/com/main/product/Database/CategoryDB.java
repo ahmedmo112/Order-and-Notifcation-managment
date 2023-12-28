@@ -1,11 +1,10 @@
 package com.main.product.Database;
 
 import com.main.product.model.Category;
-import org.springframework.stereotype.Component;
+
 
 import java.util.List;
 
-@Component
 
 public interface CategoryDB {
     public List<Category> getAllCategories();
