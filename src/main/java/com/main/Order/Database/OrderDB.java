@@ -10,5 +10,5 @@ public interface OrderDB {
     public Order getOrder(int orderId);
     public void addOrder(Order order);
 
-    public void removeOrder(Order order);
+    public void removeOrder(int orderId);
 }

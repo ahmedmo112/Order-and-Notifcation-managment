@@ -29,7 +29,7 @@ public class UserInMemoryDB implements UserDB{
      }
 
      @Override
-     public UserAccount getAccountByID(String ID) {
+     public UserAccount getAccountByID(int ID) {
             for (UserAccount user : users) {
                  if (user.getId().equals(ID)) {
                         return user;

@@ -11,7 +11,7 @@ public class OrderInMemoryDB implements OrderDB {
 
     private List<Order> orders;
 
-    OrderInMemoryDB() {
+    public OrderInMemoryDB() {
         orders = new ArrayList<>();
     }
 
@@ -35,7 +35,7 @@ public class OrderInMemoryDB implements OrderDB {
     }
 
     @Override
-    public void removeOrder(Order order) {
-        orders.remove(order);
+    public void removeOrder(int orderId) {
+        orders.removeIf(order -> order.getOrderId() == orderId);
     }
 }

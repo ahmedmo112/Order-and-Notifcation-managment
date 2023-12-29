@@ -14,7 +14,7 @@ public class Order {
 
 
     public Order() {
-
+        orderList = new ArrayList<>();
     }
 
     public Order(int orderId, double shippingFees, OrderType orderType, OrderStatus orderStatus, List<UserOrder> orderList) {
