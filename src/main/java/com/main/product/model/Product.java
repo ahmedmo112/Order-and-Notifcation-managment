@@ -21,6 +21,15 @@ public class Product {
         this.categoryID = categoryId;
     }
 
+    public Product(Product other) {
+        this.name = other.name;
+        this.serialNumber = other.serialNumber;
+        this.vendor = other.vendor;
+        this.price = other.price;
+        this.count = other.count;
+        this.categoryID = other.categoryID;
+    }
+
     public String getName() {
         return name;
     }
