@@ -1,32 +1,34 @@
 package com.main.UserAccount.model;
 
 public class AccountManger {
-     private UserAccount userAccount ;
+     private int userAccountID ;
      private double balance ;
 
+    public AccountManger() {
 
-    public AccountManger(UserAccount userAccount, double balance) {
-        this.userAccount = userAccount;
+    }
+    public AccountManger(int userAccountID, double balance) {
+        this.userAccountID = userAccountID;
         this.balance = balance;
     }
 
     public AccountManger(AccountManger accountManger){
-        this.userAccount = accountManger.userAccount;
+        this.userAccountID = accountManger.userAccountID;
         this.balance = accountManger.balance;
     }
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
+    public void setUserAccount(int userAccountID) {
+        this.userAccountID = userAccountID;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public UserAccount getUserAccount() {
-        return userAccount;
+    public int getUserAccountID() {
+        return userAccountID;
     }
 }

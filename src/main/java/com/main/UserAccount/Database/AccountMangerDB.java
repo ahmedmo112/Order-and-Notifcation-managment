@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface AccountMangerDB {
     
-    public List<AccountManger> getPayment();
-    public AccountManger getAccount(String email);
-    public AccountManger getAccount(int id);
+    public Double getBalance(int accountId);
+    public void setBalance(int accountId, double balance);
+    public AccountManger getAccount(int accountId);
     public void addAccountManger (AccountManger accountManger);
     public void removeAccountManger (AccountManger accountManger);
 
