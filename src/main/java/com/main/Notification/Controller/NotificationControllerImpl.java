@@ -1,4 +1,7 @@
 package com.main.Notification.Controller;
 
-public class NotificationControllerImpl {
+public class NotificationControllerImpl implements NotificationController {
+    NotificationControllerImpl(){
+
+    }
 }

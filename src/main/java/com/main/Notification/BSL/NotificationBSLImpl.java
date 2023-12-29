@@ -1,4 +1,4 @@
 package com.main.Notification.BSL;
 
-public class NotificationBSLImpl {
+public class NotificationBSLImpl implements NotificationBSL{
 }
