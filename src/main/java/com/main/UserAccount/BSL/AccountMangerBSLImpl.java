@@ -24,6 +24,6 @@ public class AccountMangerBSLImpl implements AccountMangerBSL {
         if(accountMangerDB.getAccount(accountId)!=null)
             return accountMangerDB.getBalance(accountId);
 
-        return Double.parseDouble(null);
+        return -1.0;
     }
 }

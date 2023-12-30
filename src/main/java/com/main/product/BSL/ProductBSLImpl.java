@@ -10,10 +10,6 @@ import java.util.List;
 public class ProductBSLImpl implements ProductBSL{
     private ProductDB productDB;
 
-    public ProductBSLImpl(ProductDB productDB) {
-        this.productDB = productDB;
-    }
-
     @Override
     public List<Product> getProducts() {
         return productDB.getProducts();

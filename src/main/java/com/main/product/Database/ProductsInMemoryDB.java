@@ -1,6 +1,5 @@
 package com.main.product.Database;
 
-import com.main.product.model.Category;
 import com.main.product.model.Product;
 import org.springframework.stereotype.Component;
 
@@ -8,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductInMemoryDB implements ProductDB {
+public class ProductsInMemoryDB implements ProductDB{
     private List<Product> products ;
 
-    public ProductInMemoryDB(){
+    public ProductsInMemoryDB(){
         products = new ArrayList<>();
-        products.add(new Product("iphone","2020","Aplle",1000.0,4,1));
+        products.add(new Product("iphone","2020","Apple",1000.0,4,1));
         products.add(new Product("Laptop","2660","Dell",5000.0,2,1));
         products.add(new Product("Clean Code","1010","DarMasr",100.0,5,3));
     }

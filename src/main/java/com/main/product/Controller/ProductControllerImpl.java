@@ -6,14 +6,13 @@ import com.main.product.BSL.CategoryBSLImpl;
 import com.main.product.BSL.ProductBSL;
 import com.main.product.BSL.ProductBSLImpl;
 import com.main.product.Database.CategoryInMemoryDB;
-import com.main.product.Database.ProductInMemoryDB;
+import com.main.product.Database.ProductDB;
+import com.main.product.Database.ProductsInMemoryDB;
 import com.main.product.model.Category;
 import com.main.product.model.Product;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -25,12 +24,13 @@ public class ProductControllerImpl implements ProductController{
     private final CategoryBSL categoryBSL;
 
     public ProductControllerImpl() {
+        ProductDB productDB = new ProductsInMemoryDB();
         this.productBSL = new ProductBSLImpl(
-                new ProductInMemoryDB()
+//                productDB
         );
         this.categoryBSL = new CategoryBSLImpl(
                 new CategoryInMemoryDB(),
-                new ProductInMemoryDB()
+                productDB
         );
     }
 

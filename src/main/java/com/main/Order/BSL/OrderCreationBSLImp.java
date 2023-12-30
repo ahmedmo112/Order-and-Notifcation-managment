@@ -1,26 +1,69 @@
 package com.main.Order.BSL;
 
+import com.main.APISchemas.ErrorMessageSchema;
+import com.main.APISchemas.NotFoundSchema;
+import com.main.APISchemas.SuccessSchema;
 import com.main.Order.Database.OrderDB;
+import com.main.Order.Database.OrderInMemoryDB;
 import com.main.Order.model.Order;
 import com.main.Order.model.OrderStatus;
 import com.main.Order.model.OrderType;
 import com.main.Order.model.UserOrder;
+import com.main.UserAccount.BSL.AccountMangerBSLImpl;
+import com.main.UserAccount.Database.AccountMangerInMemoryDB;
 import com.main.product.model.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class OrderCreationBSLImp implements OrderCreationBSL {
-    @Override
-    public void createID(Order order) {
-        int orderID = getLastUserID(order);
-        order.setOrderId(50 + orderID);
+
+    OrderValidatorBSL orderValidatorBSL;
+    OrderDB orderDB;
+
+    public OrderCreationBSLImp(OrderValidatorBSL orderValidatorBSL, OrderDB orderDB) {
+        this.orderValidatorBSL = orderValidatorBSL;
+        this.orderDB = orderDB;
     }
 
     @Override
-    public void calculateShippingFees(Order order) {
-        int totalPrice = calculateTotalPrice(order);
-        order.setShippingFees(0.1 * totalPrice);
+    public Object create(Order order) {
+        createID(order);
+        generateStatus(order);
+        generateType(order);
+
+        if (!orderValidatorBSL.checkProductsAvailability(order))
+            return new NotFoundSchema("Product");
+
+        if (!orderValidatorBSL.checkProductsAmount(order))
+            return new NotFoundSchema("Product amount");
+
+        calculateTotalPrice(order);
+
+
+        List<UserOrder> orders = order.getOrderList();
+        double singleUserShippingFee = (order.getShippingFees()/ order.getOrderList().size());
+
+        for (UserOrder userOrder : orders){
+
+            if (!orderValidatorBSL.checkUserBalance(userOrder , singleUserShippingFee))
+            {
+                return new ErrorMessageSchema("Not enough balance.");
+
+            }
+
+        }
+
+        return order;
     }
+
+    @Override
+    public void createID(Order order) {
+        int orderID = getLastOrderID() + 1;
+        order.setOrderId(50 + orderID);
+    }
+
 
     @Override
     public void generateType(Order order) {
@@ -33,25 +76,35 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
         order.setOrderStatus(OrderStatus.IN_PLACEMENT);
     }
 
-    private int calculateTotalPrice(Order order) {
+    @Override
+    public double calculateTotalPrice(Order order) {
         List<UserOrder> orders = order.getOrderList();
-        int totalPrice = 0;
+        double totalPrice = 0;
         for (UserOrder userOrder : orders) {
-            int singleOrderPrice = 0;
+            double singleOrderPrice = 0;
             for (Product product : userOrder.getProducts()) {
-                singleOrderPrice += product.getPrice();
+                singleOrderPrice += product.getPrice() * product.getCount();
             }
             totalPrice += singleOrderPrice;
+
             userOrder.setTotalPrice(singleOrderPrice);
         }
-        return totalPrice;
+        order.setShippingFees(totalPrice * 0.1);
+        return totalPrice + order.getShippingFees();
     }
 
-    private int getLastUserID(Order order) {
-        List<UserOrder> orders = order.getOrderList();
-        int lastIdx = orders.size() - 1;
-        int lastUserID = orders.get(lastIdx).getUserId();
+    private int getLastOrderID() {
+        List<Order> orders = orderDB.getOrders();
 
-        return lastUserID;
+        System.out.println(orders.size());
+        if (orders.isEmpty()) return 0;
+
+
+        System.out.println("IAM HERE ....");
+
+        int lastIdx = orders.size() - 1;
+        Order lastOrder = orders.get(lastIdx);
+
+        return lastOrder.getOrderId();
     }
 }
