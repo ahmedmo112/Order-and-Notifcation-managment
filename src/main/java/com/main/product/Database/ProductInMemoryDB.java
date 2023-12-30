@@ -1,6 +1,6 @@
 package com.main.product.Database;
 
-import com.main.product.Database.ProductDB;
+import com.main.product.model.Category;
 import com.main.product.model.Product;
 import org.springframework.stereotype.Component;
 
@@ -9,12 +9,15 @@ import java.util.List;
 
 @Component
 public class ProductInMemoryDB implements ProductDB {
-    private List<Product> products = List.of(
-            new Product("Mobile","2020","Dell",1000.0,4,1),
-            new Product("Laptop","2050","Dell",13333.0,3,1),
-            new Product("Book","2020","Dell",100.0,2,3)
+    private List<Product> products ;
 
-    );
+    public ProductInMemoryDB(){
+        products = new ArrayList<>();
+        products.add(new Product("iphone","2020","Aplle",1000.0,4,1));
+        products.add(new Product("Laptop","2660","Dell",5000.0,2,1));
+        products.add(new Product("Clean Code","1010","DarMasr",100.0,5,3));
+    }
+
     @Override
     public Product getProduct(String serialNumber) {
 
@@ -34,6 +37,7 @@ public class ProductInMemoryDB implements ProductDB {
 
     @Override
     public void addProduct(Product product) {
+        System.out.println(product.getName());
         products.add(product);
     }
 

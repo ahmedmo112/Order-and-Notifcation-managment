@@ -2,19 +2,22 @@ package com.main.UserAccount.model;
 
 public class UserAccount {
 
+    private int id;
     private String name;
     private String email;
-    private String password; 
+    private String password;
     private String address ;
-    private static int id;
+    private String phone;
 
-
-    public UserAccount(String name, String email, String password, String address, int id) {
+    public UserAccount() {
+    }
+    public UserAccount(String name, String email, String password, String address,String phone ,int id) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.address = address;
         this.id = id;
+        this.phone = phone;
     }
 
     public UserAccount(UserAccount userAccount){
@@ -64,5 +67,13 @@ public class UserAccount {
 
     public String getName() {
         return name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

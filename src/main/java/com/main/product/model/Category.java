@@ -3,15 +3,15 @@ package com.main.product.model;
 public class Category {
     private int id;
     private String name;
-    private int numOfProducts;
+
 
     public Category() {
     }
 
-    public Category(int id, String name, int numOfProducts) {
+    public Category(int id, String name) {
         this.id = id;
         this.name = name;
-        this.numOfProducts = numOfProducts;
+
     }
 
     public int getId() {
@@ -22,9 +22,7 @@ public class Category {
         return name;
     }
 
-    public int getNumOfProducts() {
-        return numOfProducts;
-    }
+
 
     public void setId(int id) {
         this.id = id;
@@ -34,8 +32,6 @@ public class Category {
         this.name= name;
     }
 
-    public void setNumOfProducts(int numOfProducts) {
-        this.numOfProducts = numOfProducts;
-    }
+
 
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ProductBSL {
     public List<Product> getProducts();
+    public Product getProduct(String serialNumber);
+    public void addProduct(Product product);
 }

@@ -6,19 +6,28 @@ public class Product {
     private String vendor;
     private Double price;
     private Integer count;
-    private int categoryId;
+    private int categoryID;
 
 
     public Product() {
     }
 
-    public Product(String name, String serialNumber, String vendor, Double price, Integer count, int category) {
+    public Product(String name, String serialNumber, String vendor, Double price, Integer count, int categoryId) {
         this.name = name;
         this.serialNumber = serialNumber;
         this.vendor = vendor;
         this.price = price;
         this.count = count;
-        this.categoryId = category;
+        this.categoryID = categoryId;
+    }
+
+    public Product(Product other) {
+        this.name = other.name;
+        this.serialNumber = other.serialNumber;
+        this.vendor = other.vendor;
+        this.price = other.price;
+        this.count = other.count;
+        this.categoryID = other.categoryID;
     }
 
     public String getName() {
@@ -42,7 +51,7 @@ public class Product {
     }
 
     public int getCategoryID() {
-        return categoryId ;
+        return categoryID ;
     }
 
     public void setName(String name) {
@@ -66,7 +75,7 @@ public class Product {
     }
 
     public void setCategory(int category) {
-        this.categoryId = category;
+        this.categoryID = category;
     }
 
 

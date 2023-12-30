@@ -3,15 +3,20 @@ package com.main.product.Database;
 import com.main.product.model.Category;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CategoryInMemoryDB implements CategoryDB{
-    private List<Category> categories= List.of(
-            new Category(1,"Electronics",2),
-            new Category(2,"Grocery",3),
-            new Category(3,"Books",1)
-    );
+    private List<Category> categories;
+
+    public CategoryInMemoryDB(){
+        categories = new ArrayList<>();
+        categories.add(new Category(1,"Electronics"));
+        categories.add(new Category(2,"Candies"));
+        categories.add(new Category(3,"Books"));
+
+    }
 
 
     @Override

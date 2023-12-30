@@ -18,4 +18,14 @@ public class ProductBSLImpl implements ProductBSL{
     public List<Product> getProducts() {
         return productDB.getProducts();
     }
+
+    @Override
+    public Product getProduct(String serialNumber) {
+        return productDB.getProduct(serialNumber);
+    }
+
+    @Override
+    public void addProduct(Product product) {
+        productDB.addProduct(product);
+    }
 }
