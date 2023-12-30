@@ -5,6 +5,7 @@ import com.main.APISchemas.CompoundOrderSchema;
 import com.main.APISchemas.SimpleOrderSchema;
 import com.main.APISchemas.SuccessSchema;
 import com.main.Notification.BSL.NotificationBSLImpl;
+import com.main.Notification.Database.NotificationInMemoryDB;
 import com.main.Order.BSL.OrderBSL;
 import com.main.Order.BSL.OrderBSLImpl;
 import com.main.Order.Database.OrderInMemoryDB;
@@ -20,7 +21,9 @@ public class OrderControllerImpl implements OrderController {
         this.orderBSL = new OrderBSLImpl(
                 new OrderInMemoryDB(),
                 new AccountMangerInMemoryDB(),
-                new NotificationBSLImpl()
+                new NotificationBSLImpl(
+                        new NotificationInMemoryDB()
+                )
         );
     }
 

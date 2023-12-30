@@ -1,6 +1,6 @@
 package com.main.UserAccount.Database;
 
-import com.main.UserAccount.model.AccountManager;
+import com.main.UserAccount.model.AccountManger;
 
 import java.util.List;
 

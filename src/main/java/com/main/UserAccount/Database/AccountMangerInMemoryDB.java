@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class AccountMangerInMemoryDB implements AccountMangerDB {
-    List<AccountManager> accountMangerList;
+    List<AccountManger> accountMangerList;
 
     public AccountMangerInMemoryDB() {
         this.accountMangerList = new ArrayList<>() ;

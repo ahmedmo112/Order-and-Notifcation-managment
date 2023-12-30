@@ -57,7 +57,7 @@ public class UserAccount {
         return email;
     }
 
-    public static Integer getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -5,8 +5,14 @@ import com.main.Notification.model.Notification;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+@Service
 public class NotificationBSLImpl implements NotificationBSL{
     private NotificationDB notificationDB;
+
+   
 
     @Override
     public void pushNotification(Notification notification, int userId) {
