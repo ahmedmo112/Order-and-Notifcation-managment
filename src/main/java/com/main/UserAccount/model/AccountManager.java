@@ -1,16 +1,16 @@
 package com.main.UserAccount.model;
 
-public class AccountManger {
+public class AccountManager {
      private UserAccount userAccount ;
      private double balance ;
 
 
-    public AccountManger(UserAccount userAccount, double balance) {
+    public AccountManager(UserAccount userAccount, double balance) {
         this.userAccount = userAccount;
         this.balance = balance;
     }
 
-    public AccountManger(AccountManger accountManger){
+    public AccountManager(AccountManager accountManger){
         this.userAccount = accountManger.userAccount;
         this.balance = accountManger.balance;
     }

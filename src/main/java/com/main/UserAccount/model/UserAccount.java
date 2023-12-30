@@ -6,7 +6,7 @@ public class UserAccount {
     private String email;
     private String password; 
     private String address ;
-    private int id;
+    private static int id;
 
 
     public UserAccount(String name, String email, String password, String address, int id) {
@@ -54,7 +54,7 @@ public class UserAccount {
         return email;
     }
 
-    public Integer getId() {
+    public static Integer getId() {
         return id;
     }
 
