@@ -6,4 +6,5 @@ import java.util.List;
 
 public class ProductsSchema {
     public List<Product> products;
+
 }
