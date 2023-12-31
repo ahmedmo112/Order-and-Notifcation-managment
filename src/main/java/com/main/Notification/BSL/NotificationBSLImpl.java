@@ -2,17 +2,14 @@ package com.main.Notification.BSL;
 
 import com.main.Notification.Database.NotificationDB;
 import com.main.Notification.model.Notification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
-import com.main.Notification.model.NotificationTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationBSLImpl implements NotificationBSL {
@@ -58,9 +55,11 @@ public class NotificationBSLImpl implements NotificationBSL {
     @Scheduled(fixedRate = 10000)
     private void sendNotifications() {
 //        while (!notificationQueue.isEmpty()) {
-        CustomPair customPair = notificationQueue.poll();
-        System.out.println("I AM HERE >>>>> " + notificationQueue.size());
-        pushNotification(customPair.notification, customPair.id);
+        if (!notificationQueue.isEmpty()) {
+            CustomPair customPair = notificationQueue.poll();
+            System.out.println("I AM HERE >>>>> " + notificationQueue.size());
+            pushNotification(customPair.notification, customPair.id);
+        }
 //        }
     }
 

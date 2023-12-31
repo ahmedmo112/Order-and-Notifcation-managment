@@ -5,6 +5,8 @@ public class StatisticsSchema {
     String mostUsedChanal;
 
     public void setMostUsedChanal(String mostUsedChanal) {
+
+        mostUsedChanal += mostUsedChanal.charAt(0) < 'a' ? "(SMS)" : "(E-MAIL)";
         this.mostUsedChanal = mostUsedChanal;
     }
 

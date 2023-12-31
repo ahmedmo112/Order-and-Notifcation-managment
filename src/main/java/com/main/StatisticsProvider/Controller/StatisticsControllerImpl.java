@@ -22,6 +22,7 @@ public class StatisticsControllerImpl implements StatisticsController {
     @GetMapping("/statistics")
     @Override
     public StatisticsSchema systemStatistics() {
+
         return statisticsBSL.retriveStatistic();
     }
 
