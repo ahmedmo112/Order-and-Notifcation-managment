@@ -10,6 +10,8 @@ import com.main.product.Database.ProductDB;
 import com.main.product.Database.ProductsInMemoryDB;
 import com.main.product.model.Category;
 import com.main.product.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,15 +25,11 @@ public class ProductControllerImpl implements ProductController{
     private final ProductBSL productBSL;
     private final CategoryBSL categoryBSL;
 
-    public ProductControllerImpl() {
-        ProductDB productDB = new ProductsInMemoryDB();
-        this.productBSL = new ProductBSLImpl(
-//                productDB
-        );
-        this.categoryBSL = new CategoryBSLImpl(
-                new CategoryInMemoryDB(),
-                productDB
-        );
+    @Autowired
+    public ProductControllerImpl(@Qualifier("productBSLImpl") ProductBSL productBSL, @Qualifier("categoryBSLImpl") CategoryBSL categoryBSL) {
+        this.productBSL = productBSL;
+        this.categoryBSL = categoryBSL;
+
     }
 
     @GetMapping("/categories/count")

@@ -1,30 +1,36 @@
 package com.main.Order.Controller;
 
-import com.main.APISchemas.AllOrdersSchema;
-import com.main.APISchemas.CompoundOrderSchema;
-import com.main.APISchemas.SimpleOrderSchema;
-import com.main.APISchemas.SuccessSchema;
+import com.main.APISchemas.*;
+import com.main.ApplicationContextProvider;
 import com.main.Notification.BSL.NotificationBSLImpl;
 import com.main.Notification.Database.NotificationInMemoryDB;
 import com.main.Order.BSL.OrderBSL;
 import com.main.Order.BSL.OrderBSLImpl;
+import com.main.Order.BSL.OrderCreationBSLImp;
+import com.main.Order.BSL.OrderValidatorBSLImpl;
 import com.main.Order.Database.OrderInMemoryDB;
 import com.main.Order.model.Order;
+import com.main.UserAccount.BSL.AccountMangerBSLImpl;
+import com.main.UserAccount.BSL.AuthenticationBSL;
 import com.main.UserAccount.Database.AccountMangerInMemoryDB;
+import com.main.UserAccount.model.UserAccount;
+import com.main.product.BSL.ProductBSLImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class OrderControllerImpl implements OrderController {
+public class OrderControllerImpl implements OrderController  {
     OrderBSL orderBSL ;
+    AuthenticationBSL authenticationBSL;
 
-    OrderControllerImpl() {
-        this.orderBSL = new OrderBSLImpl(
-                new OrderInMemoryDB(),
-                new AccountMangerInMemoryDB(),
-                new NotificationBSLImpl(
-                        new NotificationInMemoryDB()
-                )
-        );
+    @Autowired
+    OrderControllerImpl(@Qualifier("orderBSLImpl") OrderBSL orderBSL , @Qualifier("authenticationBSLImpl") AuthenticationBSL authenticationBSL) {
+        this.orderBSL =orderBSL;
+        this.authenticationBSL = authenticationBSL;
+
     }
 
 
@@ -39,20 +45,29 @@ public class OrderControllerImpl implements OrderController {
 
     @PostMapping("/orders/create/simple")
     public Object createSimpleOrder(@RequestBody SimpleOrderSchema simpleOrderSchema){
-        orderBSL.createSimpleOrder(simpleOrderSchema);
-        return new SuccessSchema("Order creation");
+        UserAccount user = authenticationBSL.getCurrUserAccount();
+        if (user== null){
+            return new ErrorMessageSchema("User not logged in");
+        }
+        return  orderBSL.createSimpleOrder(simpleOrderSchema);
     }
 
     @PostMapping("/orders/create/compound")
     public Object createCompoundOrder(@RequestBody CompoundOrderSchema compoundOrderSchema){
-        orderBSL.createCompoundOrder(compoundOrderSchema);
-        return new SuccessSchema("Order creation");
+        UserAccount user = authenticationBSL.getCurrUserAccount();
+        if (user== null){
+            return new ErrorMessageSchema("User not logged in");
+        }
+        return  orderBSL.createCompoundOrder(compoundOrderSchema);
     }
 
     @PostMapping("/orders/cancel/{id}")
     public Object cancelOrder(@PathVariable("id") int orderId){
-        orderBSL.cancelOrder(orderId);
-        return new SuccessSchema("Order cancellation");
+        UserAccount user = authenticationBSL.getCurrUserAccount();
+        if (user== null){
+            return new ErrorMessageSchema("User not logged in");
+        }
+        return orderBSL.cancelOrder(orderId);
     }
 
 

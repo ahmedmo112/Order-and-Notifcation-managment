@@ -5,12 +5,16 @@ import com.main.Notification.model.Notification;
 
 import java.util.List;
 
+import com.main.Notification.model.NotificationTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationBSLImpl implements NotificationBSL{
     private NotificationDB notificationDB;
+
 
    
 
@@ -27,7 +31,14 @@ public class NotificationBSLImpl implements NotificationBSL{
 
     }
 
-public NotificationBSLImpl(NotificationDB notificationDB) {
+    @Override
+    public void removeNotification(int userId, int notificationId) {
+
+            notificationDB.removeNotification(userId, notificationId);
+    }
+
+    @Autowired
+public NotificationBSLImpl(@Qualifier("notificationInMemoryDB") NotificationDB notificationDB) {
 
         this.notificationDB = notificationDB;
     }

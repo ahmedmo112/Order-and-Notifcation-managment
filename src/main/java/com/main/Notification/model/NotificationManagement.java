@@ -17,6 +17,16 @@ public class NotificationManagement {
         this.notifications = notifications;
     }
 
+    public void removeNotification(int notificationId) {
+        for (Notification notification: notifications) {
+            if (notification.getNotificationId() == notificationId)
+            {
+                notifications.remove(notification);
+                return;
+            }
+        }
+    }
+
     public List<Notification> getNotifications() {
         return notifications;
     }

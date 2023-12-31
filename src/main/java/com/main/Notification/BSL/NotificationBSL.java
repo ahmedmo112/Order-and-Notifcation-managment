@@ -9,4 +9,6 @@ public interface NotificationBSL {
 
     public List<Notification> retrieveNotification(int userId);
 
+    public void removeNotification(int userId, int notificationId);
+
 }

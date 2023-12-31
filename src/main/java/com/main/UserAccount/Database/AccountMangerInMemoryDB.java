@@ -1,5 +1,6 @@
 package com.main.UserAccount.Database;
 
+import com.main.Notification.model.NotificationChannels;
 import com.main.UserAccount.model.AccountManger;
 import com.main.UserAccount.model.UserAccount;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,9 @@ public class AccountMangerInMemoryDB implements AccountMangerDB {
 
     public AccountMangerInMemoryDB() {
         this.accountMangerList = new ArrayList<>() ;
-        accountMangerList.add(new AccountManger(20210038, 1000));
-        accountMangerList.add(new AccountManger(20211024, 2000));
+        accountMangerList.add(new AccountManger(20210038, 1000, NotificationChannels.SMS));
+        accountMangerList.add(new AccountManger(20211024, 2000,NotificationChannels.EMAIL));
+        accountMangerList.add(new AccountManger(20211071, 10000,NotificationChannels.SMS));
 
     }
 
@@ -47,6 +49,15 @@ public class AccountMangerInMemoryDB implements AccountMangerDB {
         return null;
     }
 
+    @Override
+    public NotificationChannels getNotificationChannel(int accountId) {
+        for (AccountManger accountManger : accountMangerList) {
+            if (accountManger.getUserAccountID() == accountId) {
+                return accountManger.getChannel();
+            }
+        }
+        return null;
+    }
 
 
     @Override
@@ -58,4 +69,8 @@ public class AccountMangerInMemoryDB implements AccountMangerDB {
     public void removeAccountManger(AccountManger accountManger) {
         accountMangerList.remove(accountManger);
     }
+
+    public List<AccountManger> getAccounts(){
+        return  accountMangerList;
+    };
 }

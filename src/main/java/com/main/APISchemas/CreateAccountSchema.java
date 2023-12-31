@@ -1,5 +1,6 @@
 package com.main.APISchemas;
 
+import com.main.Notification.model.NotificationChannels;
 import com.main.UserAccount.model.UserAccount;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,8 @@ public class CreateAccountSchema {
     private String address ;
     private String phone;
     private double balance;
+
+    private NotificationChannels channel;
 
 
 
@@ -63,5 +66,13 @@ public class CreateAccountSchema {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public NotificationChannels getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = NotificationChannels.valueOf(channel.toUpperCase());
     }
 }

@@ -12,6 +12,8 @@ import com.main.Order.model.UserOrder;
 import com.main.UserAccount.BSL.AccountMangerBSLImpl;
 import com.main.UserAccount.Database.AccountMangerInMemoryDB;
 import com.main.product.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +24,11 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
     OrderValidatorBSL orderValidatorBSL;
     OrderDB orderDB;
 
-    public OrderCreationBSLImp(OrderValidatorBSL orderValidatorBSL, OrderDB orderDB) {
+    @Autowired
+    public OrderCreationBSLImp(@Qualifier("orderValidatorBSLImpl") OrderValidatorBSL orderValidatorBSL, @Qualifier("orderInMemoryDB") OrderDB orderDB) {
         this.orderValidatorBSL = orderValidatorBSL;
         this.orderDB = orderDB;
+
     }
 
     @Override
@@ -96,11 +100,10 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
     private int getLastOrderID() {
         List<Order> orders = orderDB.getOrders();
 
-        System.out.println(orders.size());
+
         if (orders.isEmpty()) return 0;
 
 
-        System.out.println("IAM HERE ....");
 
         int lastIdx = orders.size() - 1;
         Order lastOrder = orders.get(lastIdx);

@@ -10,5 +10,6 @@ import java.util.List;
 public interface NotificationDB {
     public List<Notification> getNotification(int userId);
     public void addNotification(int userId, Notification notification);
-    public void removeNotification(int userId, Notification notification);
+    public void removeNotification(int userId, int notificationid);
+
 }

@@ -1,12 +1,14 @@
 package com.main.Order.Database;
 
 import com.main.Order.model.Order;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Scope("singleton")
 public class OrderInMemoryDB implements OrderDB {
 
     private List<Order> orders;

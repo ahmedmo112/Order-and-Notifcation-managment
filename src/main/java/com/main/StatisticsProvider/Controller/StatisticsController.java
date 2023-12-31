@@ -1,4 +1,8 @@
 package com.main.StatisticsProvider.Controller;
 
-public class StatisticsController {
+import com.main.APISchemas.StatisticsSchema;
+
+public interface StatisticsController {
+    public StatisticsSchema systemStatistics();
+
 }

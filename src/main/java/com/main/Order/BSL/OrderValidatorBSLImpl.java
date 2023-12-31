@@ -8,6 +8,8 @@ import com.main.UserAccount.Database.AccountMangerInMemoryDB;
 import com.main.product.BSL.ProductBSL;
 import com.main.product.BSL.ProductBSLImpl;
 import com.main.product.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +20,11 @@ public class OrderValidatorBSLImpl implements OrderValidatorBSL {
     ProductBSL productBSL;
     AccountMangerBSL accountMangerBSL;
 
-    public OrderValidatorBSLImpl() {
-        productBSL = new ProductBSLImpl(
-//                new ProductInMemoryDB()
-        );
-        accountMangerBSL = new AccountMangerBSLImpl(
-                new AccountMangerInMemoryDB()
-        );
+    @Autowired
+    public OrderValidatorBSLImpl(@Qualifier("productBSLImpl") ProductBSL productBSL, @Qualifier("accountMangerBSLImpl") AccountMangerBSL accountMangerBSL) {
+        this.productBSL = productBSL;
+        this.accountMangerBSL = accountMangerBSL;
+
     }
 
 
@@ -49,7 +49,7 @@ public class OrderValidatorBSLImpl implements OrderValidatorBSL {
         for (UserOrder userOrder : userOrders) {
             for (Product product : userOrder.getProducts()) {
                 Product productInDB = productBSL.getProduct(product.getSerialNumber());
-                if (productInDB == null)
+                if (productInDB == null || productInDB.getCount() == 0)
                     return false;
             }
         }
@@ -62,7 +62,6 @@ public class OrderValidatorBSLImpl implements OrderValidatorBSL {
         for (UserOrder userOrder : userOrders) {
             for (Product product : userOrder.getProducts()) {
                 Product productInDB = productBSL.getProduct(product.getSerialNumber());
-
                 if (product.getCount() > productInDB.getCount()) {
                     return false;
                 }

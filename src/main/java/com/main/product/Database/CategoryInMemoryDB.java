@@ -15,6 +15,10 @@ public class CategoryInMemoryDB implements CategoryDB{
         categories.add(new Category(1,"Electronics"));
         categories.add(new Category(2,"Candies"));
         categories.add(new Category(3,"Books"));
+        categories.add(new Category(4, "Clothing"));
+        categories.add(new Category(5, "Home Decor"));
+        categories.add(new Category(6, "Sports Equipment"));
+
 
     }
 

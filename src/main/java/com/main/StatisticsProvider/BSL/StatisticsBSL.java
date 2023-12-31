@@ -1,4 +1,8 @@
 package com.main.StatisticsProvider.BSL;
 
-public class StatisticsBSL {
+import com.main.APISchemas.StatisticsSchema;
+
+public interface StatisticsBSL {
+    public StatisticsSchema retriveStatistic();
+
 }

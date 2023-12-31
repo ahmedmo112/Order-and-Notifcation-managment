@@ -5,7 +5,7 @@ public class Product {
     private String serialNumber;
     private String vendor;
     private Double price;
-    private Integer count;
+    private int count;
     private int categoryID;
 
 

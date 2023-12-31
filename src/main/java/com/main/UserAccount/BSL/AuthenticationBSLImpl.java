@@ -2,22 +2,25 @@ package com.main.UserAccount.BSL;
 
 import com.main.APISchemas.CreateAccountSchema;
 import com.main.APISchemas.ErrorMessageSchema;
+import com.main.Notification.model.NotificationChannels;
 import com.main.UserAccount.Database.AccountMangerDB;
 import com.main.UserAccount.Database.UserDB;
 import com.main.UserAccount.model.AccountManger;
 import com.main.UserAccount.model.UserAccount;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationBSLImpl implements AuthenticationBSL{
     private UserDB userDB;
     private AccountMangerDB accountMangerDB;
-    private UserAccount currUserAccount;
+    private static UserAccount currUserAccount;
     private ValidationBSL validationBSL;
 
 
-
-    public AuthenticationBSLImpl(UserDB userDB, ValidationBSL validationBSL, AccountMangerDB accountMangerDB){
+    @Autowired
+    public AuthenticationBSLImpl(@Qualifier("userInMemoryDB") UserDB userDB, @Qualifier("accountMangerInMemoryDB") AccountMangerDB accountMangerDB, ValidationBSL validationBSL){
         this.userDB = userDB;
         this.validationBSL = validationBSL;
         this.accountMangerDB = accountMangerDB;
@@ -69,6 +72,7 @@ public class AuthenticationBSLImpl implements AuthenticationBSL{
         AccountManger accountManger = new AccountManger();
         accountManger.setBalance(createAccountSchema.getBalance());
         accountManger.setUserAccount(id);
+        accountManger.setChannel(createAccountSchema.getChannel());
         accountMangerDB.addAccountManger(accountManger);
         return true;
     }

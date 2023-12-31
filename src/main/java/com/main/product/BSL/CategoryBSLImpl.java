@@ -4,6 +4,8 @@ import com.main.product.Database.CategoryDB;
 import com.main.product.Database.ProductDB;
 import com.main.product.model.Category;
 import com.main.product.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,9 +17,11 @@ public class CategoryBSLImpl implements CategoryBSL{
     private CategoryDB categoryDB;
     private ProductDB productDB;
 
-    public CategoryBSLImpl(CategoryDB categoryDB, ProductDB productDB) {
+    @Autowired
+    public CategoryBSLImpl(@Qualifier("categoryInMemoryDB") CategoryDB categoryDB,@Qualifier("productsInMemoryDB") ProductDB productDB) {
         this.categoryDB = categoryDB;
         this.productDB = productDB;
+
     }
     @Override
     public List<Category> getAllCategories() {
