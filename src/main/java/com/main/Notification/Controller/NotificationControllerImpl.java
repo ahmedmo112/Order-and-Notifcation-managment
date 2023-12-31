@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class NotificationControllerImpl implements NotificationController{
+public class NotificationControllerImpl implements NotificationController {
     private NotificationBSL notificationBSL;
     private AuthenticationBSL authenticationBSL;
 
     @Autowired
-    public NotificationControllerImpl(@Qualifier("notificationBSLImpl") NotificationBSL notificationBSL,@Qualifier("authenticationBSLImpl") AuthenticationBSL authenticationBSL) {
+    public NotificationControllerImpl(@Qualifier("notificationBSLImpl") NotificationBSL notificationBSL, @Qualifier("authenticationBSLImpl") AuthenticationBSL authenticationBSL) {
         this.notificationBSL = notificationBSL;
         this.authenticationBSL = authenticationBSL;
 
@@ -65,25 +65,45 @@ public class NotificationControllerImpl implements NotificationController{
     public Object retrieveNotification(@PathVariable("lang") String language) {
 
         UserAccount user = authenticationBSL.getCurrUserAccount();
-        if (user== null){
+        if (user == null) {
             return new ErrorMessageSchema("User not logged in");
         }
         List<Notification> userNotification = notificationBSL.retrieveNotification(user.getId());
-        if(userNotification == null){
+        if (userNotification == null) {
             return new ErrorMessageSchema("No Notifications Found");
         }
-        List<NotificationResponseSchema>  result = new ArrayList<>();
-        for(Notification notification : userNotification){
+        List<NotificationResponseSchema> result = new ArrayList<>();
+        for (Notification notification : userNotification) {
 
-                NotificationTemplate temp = notification.getTemplate();
-                NotificationResponseSchema tempSchema = new NotificationResponseSchema(
-                        notification.getSubject(),
-                        notification.getChannel().toString(),
-                        temp.applyTemplate(language)
-                );
-                result.add(tempSchema);
-            }
+            NotificationTemplate temp = notification.getTemplate();
+            NotificationResponseSchema tempSchema = new NotificationResponseSchema(
+                    notification.getSubject(),
+                    notification.getChannel().toString(),
+                    temp.applyTemplate(language)
+            );
+            result.add(tempSchema);
+        }
 
         return result;
+    }
+
+    @GetMapping("/notification/queue")
+    @Override
+    public Object retrieveNotificationQueue() {
+        List<NotificationResponseSchema> notificationResponseSchemas = new ArrayList<>();
+//        if (notificationBSL.getNotificationQueue().isEmpty()) {
+//            return new ErrorMessageSchema("No Notifications Found");
+//        }
+        for (Notification notification : notificationBSL.getNotificationQueue()) {
+
+            NotificationTemplate temp = notification.getTemplate();
+            NotificationResponseSchema tempSchema = new NotificationResponseSchema(
+                    notification.getSubject(),
+                    notification.getChannel().toString(),
+                    temp.applyTemplate("en")
+            );
+            notificationResponseSchemas.add(tempSchema);
+        }
+        return notificationResponseSchemas;
     }
 }

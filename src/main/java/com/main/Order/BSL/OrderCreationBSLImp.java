@@ -64,6 +64,8 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
 
     @Override
     public void createID(Order order) {
+        // The following logic assign a unique id to each order .
+
         int orderID = getLastOrderID() + 1;
         order.setOrderId(50 + orderID);
     }
@@ -71,28 +73,41 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
 
     @Override
     public void generateType(Order order) {
-        order.setOrderType(order.getOrderList().size() > 1 ?
-                OrderType.COMPOUND_ORDER : OrderType.SIMPLE_ORDER);
+        // If there are more than one simple order , then its type is compound else it is simple...
+        int orderListSize = order.getOrderList().size() ;
+
+        if (orderListSize > 1){
+            order.setOrderType(OrderType.COMPOUND_ORDER);
+        }else {
+            order.setOrderType(OrderType.SIMPLE_ORDER);
+        }
+
     }
 
     @Override
     public void generateStatus(Order order) {
+        // When order is just create , its status is going to be IN PLACEMENT status .
         order.setOrderStatus(OrderStatus.IN_PLACEMENT);
     }
 
     @Override
     public double calculateTotalPrice(Order order) {
+        //
         List<UserOrder> orders = order.getOrderList();
         double totalPrice = 0;
+
+        // iterate on each user order
         for (UserOrder userOrder : orders) {
+
             double singleOrderPrice = 0;
             for (Product product : userOrder.getProducts()) {
+                // price of user order = summation of (products price * products count)
                 singleOrderPrice += product.getPrice() * product.getCount();
             }
             totalPrice += singleOrderPrice;
-
             userOrder.setTotalPrice(singleOrderPrice);
         }
+        // set order shipping fees
         order.setShippingFees(totalPrice * 0.1);
         return totalPrice + order.getShippingFees();
     }
@@ -100,10 +115,7 @@ public class OrderCreationBSLImp implements OrderCreationBSL {
     private int getLastOrderID() {
         List<Order> orders = orderDB.getOrders();
 
-
         if (orders.isEmpty()) return 0;
-
-
 
         int lastIdx = orders.size() - 1;
         Order lastOrder = orders.get(lastIdx);

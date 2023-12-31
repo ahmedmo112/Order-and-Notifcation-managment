@@ -32,13 +32,10 @@ public class OrderValidatorBSLImpl implements OrderValidatorBSL {
 
     @Override
     public Boolean checkUserBalance(UserOrder order, double shippingFee) {
-//        List<UserOrder> userOrders = order.getOrderList();
-//        for (UserOrder userOrder : userOrders) {
         double userBalanceInDB = accountMangerBSL.getBalance(order.getUserId());
-        if (userBalanceInDB < order.getTotalPrice() + shippingFee)
+        if (userBalanceInDB < order.getTotalPrice() + shippingFee) {
             return false;
-
-//        }
+        }
         return true;
     }
 
