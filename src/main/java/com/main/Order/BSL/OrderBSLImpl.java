@@ -6,6 +6,7 @@ import com.main.Notification.BSL.NotificationBSL;
 import com.main.Notification.BSL.NotificationTemplateFactory;
 import com.main.Notification.model.*;
 import com.main.Order.Database.OrderDB;
+import com.main.Order.model.NotificationTask;
 import com.main.Order.model.Order;
 import com.main.Order.model.OrderStatus;
 import com.main.Order.model.UserOrder;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Timer;
 
 @Service
 public class OrderBSLImpl implements OrderBSL {
@@ -30,13 +33,15 @@ public class OrderBSLImpl implements OrderBSL {
     private OrderCreationBSL orderCreationBSL;
     private NotificationBSL notificationBSL;
 
+    private List<NotificationTask> notificationsTask;
+
     @Autowired
     public OrderBSLImpl(@Qualifier("orderInMemoryDB") OrderDB orderDB,
                         @Qualifier("accountMangerBSLImpl") AccountMangerBSL accountMangerBSL,
                         @Qualifier("productBSLImpl") ProductBSL productBSL,
                         @Qualifier("orderCreationBSLImp") OrderCreationBSL orderCreationBSL,
                         @Qualifier("notificationBSLImpl") NotificationBSL notificationBSL) {
-
+        notificationsTask = new ArrayList<>();
         this.orderDB = orderDB;
         this.accountMangerBSL = accountMangerBSL;
         this.productBSL = productBSL;
@@ -98,8 +103,6 @@ public class OrderBSLImpl implements OrderBSL {
 
         UserOrder userOrder = new UserOrder(userOrderSchema.userId, userOrderSchema.address, 0.0, getProducts(userOrderSchema.products));
         order.getOrderList().add(userOrder);
-        System.out.println("order list size : " + order.getOrderList().size());
-        System.out.println("order list size : " + order.getOrderList().get(0).getProducts().get(0).getCount());
 
 
         return createOrder(order);
@@ -123,17 +126,16 @@ public class OrderBSLImpl implements OrderBSL {
     }
 
     private void changeStatusAfterTime(Order order, int milliseconds, OrderStatus orderStatus,String subject, String temp) {
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        order.setOrderStatus(orderStatus);
-                        notifyUsers(order.getOrderId(),order.getOrderList(),subject,temp);
-                    }
-                },
-                milliseconds
+        Timer timer = new Timer();
+        timer.schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                order.setOrderStatus(orderStatus);
+                notifyUsers(order.getOrderId(),order.getOrderList(),subject,temp);
+            }
+        }, milliseconds);
 
-        );
+        notificationsTask.add(new NotificationTask(order.getOrderId(), timer));
 
     }
 
@@ -185,6 +187,13 @@ public class OrderBSLImpl implements OrderBSL {
           accountMangerBSL.deduct(userOrder.getUserId(), -totalPrice);
 
           notificationBSL.removeNotification(userOrder.getUserId(), orderId);
+        }
+
+        for (NotificationTask notificationTask : notificationsTask) {
+            if(notificationTask.getNotificationId() == orderId){
+                notificationTask.getTimer().cancel();
+                notificationsTask.remove(notificationTask);
+            }
         }
 
         orderDB.removeOrder(orderId);
