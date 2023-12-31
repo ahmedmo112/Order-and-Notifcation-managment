@@ -96,6 +96,8 @@ public class OrderBSLImpl implements OrderBSL {
     public Object createSimpleOrder(SimpleOrderSchema userOrderSchema) {
         Order order = new Order();
 
+
+
         UserOrder userOrder = new UserOrder(userOrderSchema.userId, userOrderSchema.address, 0.0, getProducts(userOrderSchema.products));
         order.getOrderList().add(userOrder);
         System.out.println("order list size : " + order.getOrderList().size());
@@ -113,7 +115,10 @@ public class OrderBSLImpl implements OrderBSL {
             Product product = productBSL.getProduct(pds.serialNumber);
             System.out.println("schema count : " + pds.count);
 
-            Product userProduct = new Product( product) ;
+            Product userProduct = new Product();
+            if (product != null) {
+                userProduct = new Product(product);
+            }
             userProduct.setCount(pds.count);
             System.out.println("user product count : " + userProduct.getCount());
 
@@ -144,6 +149,7 @@ public class OrderBSLImpl implements OrderBSL {
         List<SimpleOrderSchema> ordersList = userOrderSchema.orders;
         for (SimpleOrderSchema simpleOrderSchema : ordersList) {
             UserOrder userOrder = new UserOrder(simpleOrderSchema.userId, simpleOrderSchema.address, 0.0, getProducts(simpleOrderSchema.products));
+
             order.getOrderList().add(userOrder);
         }
 

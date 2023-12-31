@@ -10,6 +10,12 @@ public class Product {
 
 
     public Product() {
+        this.name = "name";
+        this.serialNumber = "serialNumber";
+        this.vendor = "vendor";
+        this.price = 0.0;
+        this.count = 0;
+        this.categoryID = -1;
     }
 
     public Product(String name, String serialNumber, String vendor, Double price, Integer count, int categoryId) {
