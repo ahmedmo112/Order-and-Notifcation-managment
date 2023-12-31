@@ -54,18 +54,18 @@ public class OrderControllerImpl implements OrderController  {
 
     @PostMapping("/orders/create/compound")
     public Object createCompoundOrder(@RequestBody CompoundOrderSchema compoundOrderSchema){
-        UserAccount user = authenticationBSL.getCurrUserAccount();
+         UserAccount user = authenticationBSL.getCurrUserAccount();
         if (user== null){
-            return new ErrorMessageSchema("User not logged in");
+                    return new ErrorMessageSchema("User not logged in");
         }
         return  orderBSL.createCompoundOrder(compoundOrderSchema);
     }
 
     @PostMapping("/orders/cancel/{id}")
     public Object cancelOrder(@PathVariable("id") int orderId){
-        UserAccount user = authenticationBSL.getCurrUserAccount();
+         UserAccount user = authenticationBSL.getCurrUserAccount();
         if (user== null){
-            return new ErrorMessageSchema("User not logged in");
+                    return new ErrorMessageSchema("User not logged in");
         }
         return orderBSL.cancelOrder(orderId);
     }
