@@ -17,4 +17,6 @@ public interface OrderBSL {
 
     public void deducateBalance(Order order);
     public List<Order> getAllOrders();
+
+    public List<Order> getOrdersByUserId(int userId);
 }

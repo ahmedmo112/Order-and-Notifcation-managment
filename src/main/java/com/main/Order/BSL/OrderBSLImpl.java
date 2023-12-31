@@ -41,7 +41,7 @@ public class OrderBSLImpl implements OrderBSL {
                         @Qualifier("productBSLImpl") ProductBSL productBSL,
                         @Qualifier("orderCreationBSLImp") OrderCreationBSL orderCreationBSL,
                         @Qualifier("notificationBSLImpl") NotificationBSL notificationBSL) {
-        notificationsTask = new ArrayList<>();
+        notificationsTask  = new ArrayList<>();
         this.orderDB = orderDB;
         this.accountMangerBSL = accountMangerBSL;
         this.productBSL = productBSL;
@@ -194,12 +194,16 @@ public class OrderBSLImpl implements OrderBSL {
 
           notificationBSL.removeNotification(userOrder.getUserId(), orderId);
         }
-
-        for (NotificationTask notificationTask : notificationsTask) {
-            if(notificationTask.getNotificationId() == orderId){
-                notificationTask.getTimer().cancel();
-                notificationsTask.remove(notificationTask);
-            }
+        int count = 0;
+        while (count <3){
+           for (NotificationTask notificationTask : notificationsTask) {
+               if (notificationTask.getNotificationId() == orderId) {
+                   notificationTask.getTimer().cancel();
+                   notificationsTask.remove(notificationTask);
+                   count++;
+                   break;
+               }
+           }
         }
 
         orderDB.removeOrder(orderId);
@@ -248,6 +252,22 @@ public class OrderBSLImpl implements OrderBSL {
     @Override
     public List<Order> getAllOrders() {
         return orderDB.getOrders();
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(int userId) {
+        List<Order> orders = orderDB.getOrders();
+        List<Order> userOrders = new ArrayList<>();
+
+        for (Order order : orders) {
+            for (UserOrder userOrder : order.getOrderList()) {
+                if (userOrder.getUserId() == userId) {
+                    userOrders.add(order);
+                    break;
+                }
+            }
+        }
+        return userOrders;
     }
 
 }

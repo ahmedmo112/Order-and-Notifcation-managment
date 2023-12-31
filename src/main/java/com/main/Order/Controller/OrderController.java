@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface OrderController {
     public AllOrdersSchema getOrders();
+    public Object getOrdersByUserId();
     public Object cancelOrder(int orderId);
 
     public Object createSimpleOrder( SimpleOrderSchema compoundOrderSchema);

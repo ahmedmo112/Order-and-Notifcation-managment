@@ -42,6 +42,18 @@ public class OrderControllerImpl implements OrderController  {
         return allOrdersSchema;
     }
 
+    @GetMapping("/orders/user")
+    @Override
+    public Object getOrdersByUserId() {
+        UserAccount user = authenticationBSL.getCurrUserAccount();
+        if (user== null){
+            return  new ErrorMessageSchema("User not logged in");
+        }
+        AllOrdersSchema allOrdersSchema = new AllOrdersSchema();
+        allOrdersSchema.orders = orderBSL.getOrdersByUserId(user.getId());
+        return allOrdersSchema;
+    }
+
 
     @PostMapping("/orders/create/simple")
     public Object createSimpleOrder(@RequestBody SimpleOrderSchema simpleOrderSchema){
