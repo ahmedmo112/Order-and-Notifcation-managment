@@ -69,7 +69,9 @@ public class NotificationControllerImpl implements NotificationController{
             return new ErrorMessageSchema("User not logged in");
         }
         List<Notification> userNotification = notificationBSL.retrieveNotification(user.getId());
-
+        if(userNotification == null){
+            return new ErrorMessageSchema("No Notifications Found");
+        }
         List<NotificationResponseSchema>  result = new ArrayList<>();
         for(Notification notification : userNotification){
 

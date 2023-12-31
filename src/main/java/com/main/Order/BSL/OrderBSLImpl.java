@@ -1,6 +1,7 @@
 package com.main.Order.BSL;
 
 
+import ch.qos.logback.core.joran.sanity.Pair;
 import com.main.APISchemas.*;
 import com.main.Notification.BSL.NotificationBSL;
 import com.main.Notification.BSL.NotificationTemplateFactory;
@@ -16,12 +17,10 @@ import com.main.product.BSL.ProductBSL;
 import com.main.product.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Timer;
+import java.util.*;
 
 @Service
 public class OrderBSLImpl implements OrderBSL {
@@ -34,6 +33,14 @@ public class OrderBSLImpl implements OrderBSL {
     private NotificationBSL notificationBSL;
 
     private List<NotificationTask> notificationsTask;
+    private Queue<CustomPair> notificationQueue;
+
+     class CustomPair {
+        public Notification notification;
+        public Integer id;
+
+    }
+
 
     @Autowired
     public OrderBSLImpl(@Qualifier("orderInMemoryDB") OrderDB orderDB,
@@ -42,6 +49,7 @@ public class OrderBSLImpl implements OrderBSL {
                         @Qualifier("orderCreationBSLImp") OrderCreationBSL orderCreationBSL,
                         @Qualifier("notificationBSLImpl") NotificationBSL notificationBSL) {
         notificationsTask  = new ArrayList<>();
+        notificationQueue = new LinkedList<>();
         this.orderDB = orderDB;
         this.accountMangerBSL = accountMangerBSL;
         this.productBSL = productBSL;
@@ -225,9 +233,22 @@ public class OrderBSLImpl implements OrderBSL {
             if (notificationTemplate == null)
                 continue;
             notification.setTemplate(notificationTemplate);
-            notificationBSL.pushNotification(notification, userOrder.getUserId());
+            CustomPair customPair = new CustomPair();
+            customPair.notification = notification;
+            customPair.id = userOrder.getUserId();
+            notificationQueue.add(customPair);
+
         }
     }
+
+    @Scheduled(fixedRate = 10000)
+    public void sendNotifications(){
+            while (!notificationQueue.isEmpty()){
+                CustomPair customPair = notificationQueue.poll();
+                notificationBSL.pushNotification(customPair.notification,customPair.id);
+            }
+        }
+
 
     @Override
     public void deducateBalance(Order order) {
